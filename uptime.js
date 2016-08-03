@@ -6,7 +6,6 @@ getUptimeLoop();
 
 function getUptimeLoop() {
 	getUptime(function(data) {
-		console.log(data);
 		fs.appendFileSync('data.txt', data[0] + "," + data[1] + "," + data[2] + "\n");
 		git_cmd();
 		setTimeout(getUptimeLoop, 10000);
@@ -28,3 +27,4 @@ function git_cmd(cb) {
     child_process.execSync('git add .');
     child_process.execSync('git commit -m "Added data"');
 }
+
