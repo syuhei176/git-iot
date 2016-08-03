@@ -57,22 +57,15 @@ function refresh(data) {
 
 	var width = 700,
 	    thumb  = width / 5,
-	    height = thumb/1.5 * (examples.length/5); 
+	    height = thumb/1.5; 
 
 
 	var view;
 	vg.parse.spec(spec(data), {
-	  load: { baseURL: "images/examples/" }
+	  load: {}
 	}, function(chart) {
 	  view = chart({ el: "#examples", renderer: "svg" })
 	    .update({});
-
-	  view.on('click', function(e, i) {
-	    if (!i) return;
-	    if (i.mark.marktype === 'image') i = i.mark.group;
-	    var d = i.datum;
-	    window.location = d.editor ? 'http://vega.github.io/vega-editor/index.html?spec=' + d.name : d.url; 
-	  });
 	});
 
 }
