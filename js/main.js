@@ -88,6 +88,5 @@ $.get('data.txt', {}, function(data) {
 		var arr = currentValue.split(',');
 		return previousValue.concat([{type:"1min",x:index,y:arr[0]},{type:"5min",x:index,y:arr[1]},{type:"15min",x:index,y:arr[2]}]);
 	}, []);
-	console.log(data2);
 	refresh(data2);
 });
