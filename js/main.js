@@ -23,6 +23,12 @@ function spec(data){
 	      "range": "height",
 	      "nice": true,
 	      "domain": {"data": "table", "field": "y"}
+	    },
+	    {
+	      "name": "color", 
+	      "type": "ordinal", 
+	      "domain": {"data": "table", "field": "type"},
+	      "range": "category10"
 	    }
 	  ],
 	  "axes": [
@@ -31,24 +37,31 @@ function spec(data){
 	  ],
 	  "marks": [
 	    {
-	      "type": "area",
-	      "from": {"data": "table"},
-	      "properties": {
-	        "enter": {
-	          "interpolate": {"value": "monotone"},
-	          "x": {"scale": "x", "field": "x"},
-	          "y": {"scale": "y", "field": "y"},
-	          "y2": {"scale": "y", "value": 0},
-	          "fill": {"value": "steelblue"}
-	        },
-	        "update": {
-	          "fillOpacity": {"value": 1}
-	        },
-	        "hover": {
-	          "fillOpacity": {"value": 0.5}
-	        }
-	      }
-	    }
+	      "type": "group",
+	      "from": {
+	        "data": "table",
+	        "transform": [{"type": "facet", "groupby": ["type"]}]
+	      },
+	      marks: [{
+		      "type": "line",
+		      //"from": {"data": "table"},
+		      "properties": {
+		        "enter": {
+		          "interpolate": {"value": "monotone"},
+		          "x": {"scale": "x", "field": "x"},
+		          "y": {"scale": "y", "field": "y"},
+		          "y2": {"scale": "y", "value": 0}
+		        },
+		        "update": {
+		          //"fillOpacity": {"value": 1},
+		          "stroke": {"scale": "color", "field": "type"}
+		        },
+		        "hover": {
+		          //"fillOpacity": {"value": 0.5}
+		        }
+		      }
+		    }]
+		}
 	  ]
 	}
 }
@@ -71,10 +84,10 @@ function refresh(data) {
 }
 
 $.get('data.txt', {}, function(data) {
-	var data2 = data.split('\n').map(function(d, index) {
-		var arr = d.split(',');
-		return {x:index,y:arr[0]}
-	});
+	var data2 = data.split('\n').reduce(function(previousValue, currentValue, index) {
+		var arr = currentValue.split(',');
+		return previousValue.concat([{type:"1min",x:index,y:arr[0]},{type:"5min",x:index,y:arr[1]},{type:"15min",x:index,y:arr[2]}]);
+	}, []);
 	console.log(data2);
 	refresh(data2);
 });

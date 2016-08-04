@@ -24,7 +24,7 @@ function getUptime(cb) {
 
 
 function git_cmd(cb) {
-    child_process.execSync('git add .');
+    child_process.execSync('git add data.txt');
     child_process.execSync('git commit -m "Added data"');
 }
 
